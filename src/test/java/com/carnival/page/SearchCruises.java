@@ -306,4 +306,87 @@ public class SearchCruises extends JUnitHTMLReporter {
 						assertTrue(false);
 					}
 				}
+				
+//User Story 002
+				
+				//TC-006
+				@Test
+				public void searchTripViewItinerary() throws InterruptedException {
+					
+					int min = 0;
+					int max = 0;
+					final int testMinValue = 400;
+					final int testMaxValue = 600;
+					int numMinClicks = 0;
+					int numMaxClicks = 0;
+					
+					//Evaluate if signup pop-up is displayed
+					if (driver.findElement(signUpLocator).isDisplayed()) {
+						driver.findElement(signUpLocator).click();
+					}
+					
+					driver.findElement(sailToLocator).click();
+					driver.findElement(sailToBahamasLocator).click();
+					
+					driver.findElement(durationLocator).click();
+					
+					driver.findElement(days69Locator).click();
+					driver.findElement(searchButtonlocator).click();
+					Thread.sleep(2000);
+					driver.findElement(pricingMenuLocator).click();
+										
+					min = Integer.parseInt(driver.findElement(pricingMinValueLocator).getAttribute("aria-valuemin"));
+					max = Integer.parseInt(driver.findElement(pricingMaxValueLocator).getAttribute("aria-valuemax"));
+					
+					//Evaluate if pricing test values are consistent  
+					if (min <= testMinValue && max >= testMaxValue) {
+						
+						//pricing Minimum Value is moved
+						driver.findElement(pricingMinValueLocator).click();
+						numMinClicks = (testMinValue - min)/10;
+						int i = 0;
+						while (i < numMinClicks) {			
+							driver.findElement(pricingMinValueLocator).sendKeys(Keys.ARROW_RIGHT);
+							i++;
+						}
+						
+						//pricing Maximum Value is moved
+						driver.findElement(pricingMaxValueLocator).click();
+						numMaxClicks = (max - testMaxValue)/10;
+						i = 0;
+						while (i < numMaxClicks) {			
+							driver.findElement(pricingMaxValueLocator).sendKeys(Keys.ARROW_LEFT);
+							i++;
+						}
+					}
+					
+					//Itinerary consult
+					Thread.sleep(2000);
+					driver.findElement(learnMoreButton).click();
+					Thread.sleep(2000);
+															
+					driver.findElement(learnMorePlaceLocator).click();
+					Thread.sleep(2000);
+					driver.findElement(nextInfoPlaceLocator).click();
+					Thread.sleep(2000);		
+					driver.findElement(learnMoreFunDayLocator).click();
+					Thread.sleep(2000);
+					driver.findElement(nextInfoFunLocator).click();
+					driver.findElement(closeFunDetailLocator).click();
+										
+					//Verify existence of "Book Now" buttons
+					try {
+						driver.findElement(bookNowTopLocator).isDisplayed();
+						assertTrue(true);
+						}catch(org.openqa.selenium.NoSuchElementException e) {
+							Assert.assertFalse("Button 'Book Now does not exist in the page top!'", true);
+						}
+					try {
+						driver.findElement(bookNowBottomLocator).isDisplayed();	
+						assertTrue(true);
+						}catch(org.openqa.selenium.NoSuchElementException e) {
+							Assert.assertFalse("Button 'Book Now does not exist in the page bottom!'", true);
+						}
+				}
+
 }
