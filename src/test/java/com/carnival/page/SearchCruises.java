@@ -306,4 +306,5 @@ public class SearchCruises extends JUnitHTMLReporter {
 						assertTrue(false);
 					}
 				}
+				
 }
